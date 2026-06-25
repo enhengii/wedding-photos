@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="theme-color" content="#0d0d0d" />
+    <meta name="description" content="我们的结婚照黑白摄影展" />
+    <meta property="og:title" content="我们的结婚照" />
+    <meta property="og:description" content="一场关于相爱、靠近与成家的黑白摄影展。" />
+    <meta property="og:type" content="website" />
+    <title>我们的结婚照</title>
+    <link rel="preload" as="image" href="./assets/hero-placeholder.png" />
+    <link rel="stylesheet" href="./styles.css?v=github-pages-1" />
+  </head>
+  <body>
+    <div class="cursor-light" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+    <main>
+      <section class="hero" aria-label="结婚照摄影展封面">
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-frame hero-frame-main"></div>
+          <div class="hero-frame hero-frame-small"></div>
+          <div class="hero-count">50</div>
+          <div class="hero-marquee">A quiet record of vows, flowers, family, laughter, and the beginning of home.</div>
+        </div>
+
+        <div class="hero-copy">
+          <p class="eyebrow reveal">Wedding Photo Exhibition</p>
+          <h1>我们的<br />结婚照</h1>
+          <p class="hero-text reveal">一场关于相爱、靠近与成家的黑白摄影展。把誓言、花、掌声和笑意，按下快门，也放进日后的每一次回望。</p>
+          <div class="hero-actions reveal">
+            <button class="primary-action" type="button" data-scroll-target="#gallery">进入展览</button>
+            <button class="ghost-action" type="button" data-scroll-target="#index">查看索引</button>
+          </div>
+        </div>
+
+        <aside class="hero-aside reveal" aria-label="相册信息">
+          <span>Enheng</span>
+          <span>50 Photos</span>
+          <span>Love Story</span>
+        </aside>
+
+        <div class="hero-note reveal" aria-hidden="true">
+          <span>VOL.01</span>
+          <p>今天以后，很多普通的日子都会因为这一页而变得有出处。</p>
+        </div>
+      </section>
+
+      <section class="statement" aria-label="展览导语">
+        <div class="statement-number reveal">01</div>
+        <div class="statement-copy reveal">
+          <p class="eyebrow">Statement</p>
+          <h2>把婚礼做成一次慢慢观看的展览。</h2>
+        </div>
+        <p class="statement-text reveal">
+          不急着把所有照片一次性铺满，而是让每一次滚动都像翻过一页相纸。黑白、留白、编号和细线，会把注意力还给照片本身。
+        </p>
+      </section>
+
+      <section class="poem-strip" aria-label="装饰文案">
+        <p class="reveal">有些爱不需要很响亮，只要在同一个方向里，一次又一次地站在彼此身旁。</p>
+        <span class="reveal">Vows / Light / Family / Forever</span>
+      </section>
+
+      <section class="index-section" id="index" aria-label="照片索引">
+        <div class="section-kicker reveal">
+          <p class="eyebrow">Index</p>
+          <h2>照片索引</h2>
+        </div>
+        <div class="photo-index" id="photoIndex" aria-label="照片快速索引"></div>
+      </section>
+
+      <section class="gallery-section" id="gallery" aria-label="照片展示">
+        <div class="gallery-lead reveal">
+          <p class="eyebrow">Gallery</p>
+          <h2>按照片气质排成四章</h2>
+          <p>我把 50 张照片分成宫廷白纱、夜色庆祝、红色庭院、时装亲密四组。移动端会按每组照片的气质切换版式，不再是一整套重复网格。</p>
+          <div class="chapter-notes" aria-label="章节说明">
+            <span>01  宫廷白纱</span>
+            <span>02  夜色庆祝</span>
+            <span>03  红色庭院</span>
+            <span>04  时装亲密</span>
+          </div>
+        </div>
+        <div class="gallery-chapters" id="galleryGrid"></div>
+      </section>
+
+      <section class="ending" aria-label="结尾">
+        <p class="eyebrow reveal">Forever Begins</p>
+        <h2 class="reveal">谢谢你们，见证我们的这一天。</h2>
+        <p class="ending-copy reveal">愿这一天的光，在往后的很多年里，仍然落在我们回家的路上。</p>
+      </section>
+    </main>
+
+    <dialog class="viewer" id="viewer" aria-label="照片预览">
+      <button class="viewer-close" type="button" aria-label="关闭预览">×</button>
+      <button class="viewer-nav viewer-prev" type="button" aria-label="上一张">‹</button>
+      <div class="viewer-stage">
+        <img id="viewerImage" alt="" />
+        <div class="viewer-placeholder" id="viewerPlaceholder" aria-hidden="true"></div>
+      </div>
+      <button class="viewer-nav viewer-next" type="button" aria-label="下一张">›</button>
+      <footer class="viewer-meta">
+        <span id="viewerCounter"></span>
+        <p id="viewerCaption"></p>
+      </footer>
+    </dialog>
+
+    <script src="./app.js?v=github-pages-1"></script>
+  </body>
+</html>
