@@ -290,12 +290,12 @@ function makePhotoCard(index, layout, position) {
 
   const image = new Image();
   image.alt = photo.caption;
+  image.width = photo.width;
+  image.height = photo.height;
   image.src = photo.previewSrc;
-  image.srcset = `${photo.previewSrc} 900w, ${photo.thumbSrc} 1400w`;
-  image.sizes = "(min-width: 960px) 24vw, (min-width: 760px) 42vw, 96vw";
-  image.loading = position < 2 ? "eager" : "lazy";
+  image.loading = position === 0 ? "eager" : "lazy";
   image.decoding = "async";
-  image.fetchPriority = position < 2 ? "high" : "low";
+  image.fetchPriority = position === 0 ? "high" : "low";
 
   image.addEventListener("load", () => {
     photo.loaded = true;
@@ -347,28 +347,39 @@ function openViewer(index) {
 
 function updateViewer() {
   const photo = photos[activeIndex];
-  viewer.classList.toggle("has-photo", photo.loaded);
+  viewer.classList.remove("has-photo");
   viewerCounter.textContent = `${photoNumber(activeIndex)} / ${photoCount}`;
   viewerCaption.textContent = photo.caption;
+  viewerPlaceholder.innerHTML = `
+    <div>
+      <strong>${photoNumber(activeIndex)}</strong>
+      <small>Loading Photo</small>
+    </div>
+  `;
 
-  if (photo.loaded) {
-    viewerImage.src = photo.fullSrc;
-    viewerImage.alt = photo.caption;
-  } else {
-    viewerImage.removeAttribute("src");
-    viewerImage.alt = "";
-    viewerPlaceholder.innerHTML = `
-      <div>
-        <strong>${photoNumber(activeIndex)}</strong>
-        <small>Photo Pending</small>
-      </div>
-    `;
+  viewerImage.onload = () => {
+    viewer.classList.add("has-photo");
+    preloadNeighborPhotos();
+  };
+  viewerImage.src = photo.fullSrc;
+  viewerImage.alt = photo.caption;
+  if (viewerImage.complete) {
+    viewer.classList.add("has-photo");
+    preloadNeighborPhotos();
   }
 }
 
 function stepViewer(direction) {
   activeIndex = (activeIndex + direction + photoCount) % photoCount;
   updateViewer();
+}
+
+function preloadNeighborPhotos() {
+  [-1, 1].forEach((direction) => {
+    const nextIndex = (activeIndex + direction + photoCount) % photoCount;
+    const preload = new Image();
+    preload.src = photos[nextIndex].fullSrc;
+  });
 }
 
 function updateProgress() {
