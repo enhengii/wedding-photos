@@ -210,6 +210,7 @@ const prevButton = document.querySelector(".viewer-prev");
 const nextButton = document.querySelector(".viewer-next");
 const cursorLight = document.querySelector(".cursor-light");
 const progressBar = document.querySelector(".scroll-progress span");
+const chapterButtons = [...document.querySelectorAll(".chapter-notes [data-scroll-target]")];
 
 const photos = Array.from({ length: photoCount }, (_, index) => ({
   caption: captions[index] || `婚照 ${index + 1}`,
@@ -223,6 +224,8 @@ const photos = Array.from({ length: photoCount }, (_, index) => ({
 }));
 
 let activeIndex = 0;
+let viewerTouchStartX = 0;
+let viewerTouchStartY = 0;
 
 function fileName(index, size) {
   return `./images/${size}/photo-${String(index + 1).padStart(2, "0")}.jpg`;
@@ -236,8 +239,10 @@ function makeIndexButton(index) {
   const button = document.createElement("button");
   button.className = "index-button reveal";
   button.type = "button";
+  button.dataset.index = String(index);
   button.textContent = photoNumber(index);
   button.addEventListener("click", () => {
+    setActiveIndexButton(index);
     document.querySelector(`[data-card-index="${index}"]`)?.scrollIntoView({
       behavior: "smooth",
       block: "center",
@@ -285,6 +290,7 @@ function makePhotoCard(index, layout, position) {
   button.className = `photo-card ${layoutClass(layout, position)} ${orientation} rhythm-${position % 6}`;
   button.type = "button";
   button.dataset.cardIndex = String(index);
+  button.dataset.photoNumber = photoNumber(index);
   button.style.aspectRatio = `${photo.width} / ${photo.height}`;
   button.style.transitionDelay = `${Math.min(position % 10, 7) * 34}ms`;
 
@@ -335,6 +341,7 @@ function makeChapter(chapter) {
 
 function openViewer(index) {
   activeIndex = index;
+  setActiveIndexButton(index);
   updateViewer();
   document.body.classList.add("is-viewer-open");
 
@@ -371,6 +378,7 @@ function updateViewer() {
 
 function stepViewer(direction) {
   activeIndex = (activeIndex + direction + photoCount) % photoCount;
+  setActiveIndexButton(activeIndex);
   updateViewer();
 }
 
@@ -386,6 +394,60 @@ function updateProgress() {
   const scrollable = document.documentElement.scrollHeight - window.innerHeight;
   const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
   progressBar.style.setProperty("--progress", String(Math.min(Math.max(progress, 0), 1)));
+}
+
+function setActiveIndexButton(index) {
+  document.querySelectorAll(".index-button.is-active").forEach((button) => {
+    button.classList.remove("is-active");
+  });
+  const button = document.querySelector(`.index-button[data-index="${index}"]`);
+  button?.classList.add("is-active");
+  button?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+}
+
+function setupActivePhotoTracking() {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      const index = Number(visible.target.dataset.cardIndex);
+      setActiveIndexButton(index);
+    },
+    {
+      rootMargin: "-42% 0px -42% 0px",
+      threshold: [0.2, 0.45, 0.7],
+    },
+  );
+
+  document.querySelectorAll(".photo-card").forEach((target) => observer.observe(target));
+}
+
+function setupActiveChapterTracking() {
+  chapterButtons[0]?.classList.add("is-active");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const active = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!active) return;
+      chapterButtons.forEach((button) => {
+        const isActive = button.dataset.scrollTarget === `#${active.target.id}`;
+        button.classList.toggle("is-active", isActive);
+        if (isActive) {
+          button.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+        }
+      });
+    },
+    {
+      rootMargin: "-26% 0px -58% 0px",
+      threshold: [0.12, 0.3, 0.5],
+    },
+  );
+
+  document.querySelectorAll(".photo-chapter").forEach((target) => observer.observe(target));
 }
 
 function setupReveal() {
@@ -415,7 +477,10 @@ chapters.forEach((chapter) => gallery.append(makeChapter(chapter)));
 
 document.querySelectorAll("[data-scroll-target]").forEach((button) => {
   button.addEventListener("click", () => {
-    document.querySelector(button.dataset.scrollTarget)?.scrollIntoView({ behavior: "smooth" });
+    document.querySelector(button.dataset.scrollTarget)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   });
 });
 
@@ -428,6 +493,28 @@ viewer.addEventListener("click", (event) => {
     viewer.close();
   }
 });
+
+viewer.addEventListener(
+  "touchstart",
+  (event) => {
+    const touch = event.changedTouches[0];
+    viewerTouchStartX = touch.clientX;
+    viewerTouchStartY = touch.clientY;
+  },
+  { passive: true },
+);
+
+viewer.addEventListener(
+  "touchend",
+  (event) => {
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - viewerTouchStartX;
+    const deltaY = touch.clientY - viewerTouchStartY;
+    if (Math.abs(deltaX) < 46 || Math.abs(deltaX) < Math.abs(deltaY) * 1.3) return;
+    stepViewer(deltaX > 0 ? -1 : 1);
+  },
+  { passive: true },
+);
 
 viewer.addEventListener("close", () => {
   document.body.classList.remove("is-viewer-open");
@@ -450,4 +537,6 @@ window.addEventListener("scroll", updateProgress, { passive: true });
 window.addEventListener("resize", updateProgress);
 
 setupReveal();
+setupActivePhotoTracking();
+setupActiveChapterTracking();
 updateProgress();
