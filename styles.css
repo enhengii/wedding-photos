@@ -465,6 +465,8 @@ main {
 .photo-chapter {
   display: grid;
   gap: 18px;
+  content-visibility: auto;
+  contain-intrinsic-size: 1200px;
 }
 
 .chapter-heading {
