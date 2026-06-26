@@ -7,9 +7,10 @@
 当前网站已根据 `/Users/enhengii/Desktop/照片/` 的 50 张照片生成了网页用图片：
 
 - `images/thumbs/photo-01.jpg` 到 `images/thumbs/photo-50.jpg`：页面高清缩略图
+- `images/preview/photo-01.jpg` 到 `images/preview/photo-50.jpg`：移动端和列表优先加载的轻量预览图
 - `images/full/photo-01.jpg` 到 `images/full/photo-50.jpg`：点击预览使用的高清展示图
 
-缩略图按照片宽高比例排版，尽量减少留白，也避免强制裁切人物。点击照片后会打开 `images/full` 里的高清展示图，并在 PC 和移动端都按正常比例完整适配到一屏内。
+缩略图按照片宽高比例排版，尽量减少留白，也避免强制裁切人物。列表优先加载 `images/preview` 里的轻量图，点击照片后会打开 `images/full` 里的高清展示图，并在 PC 和移动端都按正常比例完整适配到一屏内。
 
 页面按照片风格分成四章：
 
