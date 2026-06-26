@@ -226,6 +226,7 @@ const photos = Array.from({ length: photoCount }, (_, index) => ({
 let activeIndex = 0;
 let viewerTouchStartX = 0;
 let viewerTouchStartY = 0;
+let progressFrame = 0;
 
 function fileName(index, size) {
   return `./images/${size}/photo-${String(index + 1).padStart(2, "0")}.jpg`;
@@ -242,7 +243,7 @@ function makeIndexButton(index) {
   button.dataset.index = String(index);
   button.textContent = photoNumber(index);
   button.addEventListener("click", () => {
-    setActiveIndexButton(index);
+    setActiveIndexButton(index, true);
     document.querySelector(`[data-card-index="${index}"]`)?.scrollIntoView({
       behavior: "smooth",
       block: "center",
@@ -341,7 +342,7 @@ function makeChapter(chapter) {
 
 function openViewer(index) {
   activeIndex = index;
-  setActiveIndexButton(index);
+  setActiveIndexButton(index, true);
   updateViewer();
   document.body.classList.add("is-viewer-open");
 
@@ -378,7 +379,7 @@ function updateViewer() {
 
 function stepViewer(direction) {
   activeIndex = (activeIndex + direction + photoCount) % photoCount;
-  setActiveIndexButton(activeIndex);
+  setActiveIndexButton(activeIndex, true);
   updateViewer();
 }
 
@@ -391,18 +392,24 @@ function preloadNeighborPhotos() {
 }
 
 function updateProgress() {
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
-  progressBar.style.setProperty("--progress", String(Math.min(Math.max(progress, 0), 1)));
+  if (progressFrame) return;
+  progressFrame = requestAnimationFrame(() => {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+    progressBar.style.setProperty("--progress", String(Math.min(Math.max(progress, 0), 1)));
+    progressFrame = 0;
+  });
 }
 
-function setActiveIndexButton(index) {
+function setActiveIndexButton(index, shouldScroll = false) {
   document.querySelectorAll(".index-button.is-active").forEach((button) => {
     button.classList.remove("is-active");
   });
   const button = document.querySelector(`.index-button[data-index="${index}"]`);
   button?.classList.add("is-active");
-  button?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  if (shouldScroll) {
+    button?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  }
 }
 
 function setupActivePhotoTracking() {
@@ -436,9 +443,6 @@ function setupActiveChapterTracking() {
       chapterButtons.forEach((button) => {
         const isActive = button.dataset.scrollTarget === `#${active.target.id}`;
         button.classList.toggle("is-active", isActive);
-        if (isActive) {
-          button.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-        }
       });
     },
     {
@@ -528,6 +532,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("pointermove", (event) => {
+  if (event.pointerType !== "mouse") return;
   document.body.classList.add("has-pointer");
   cursorLight.style.left = `${event.clientX}px`;
   cursorLight.style.top = `${event.clientY}px`;
@@ -539,4 +544,5 @@ window.addEventListener("resize", updateProgress);
 setupReveal();
 setupActivePhotoTracking();
 setupActiveChapterTracking();
+setActiveIndexButton(0);
 updateProgress();
