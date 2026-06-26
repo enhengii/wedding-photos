@@ -1,4 +1,5 @@
 const photoCount = 50;
+const assetVersion = "img-lite-1";
 
 const originalFiles = [
   "photo-01.jpg",
@@ -229,7 +230,7 @@ let viewerTouchStartY = 0;
 let progressFrame = 0;
 
 function fileName(index, size) {
-  return `./images/${size}/photo-${String(index + 1).padStart(2, "0")}.jpg`;
+  return `./images/${size}/photo-${String(index + 1).padStart(2, "0")}.jpg?v=${assetVersion}`;
 }
 
 function photoNumber(index) {
@@ -300,9 +301,9 @@ function makePhotoCard(index, layout, position) {
   image.width = photo.width;
   image.height = photo.height;
   image.src = photo.previewSrc;
-  image.loading = position === 0 ? "eager" : "lazy";
+  image.loading = index < 2 ? "eager" : "lazy";
   image.decoding = "async";
-  image.fetchPriority = position === 0 ? "high" : "low";
+  image.fetchPriority = index < 2 ? "high" : "low";
 
   image.addEventListener("load", () => {
     photo.loaded = true;
