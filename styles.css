@@ -426,17 +426,17 @@ main {
 }
 
 .section-gallery {
-  column-count: 4;
-  column-gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(8px, 1.1vw, 14px);
+  align-items: start;
 }
 
 .photo-card {
   position: relative;
-  display: inline-block;
+  display: block;
   width: 100%;
-  margin: 0 0 10px;
   overflow: hidden;
-  break-inside: avoid;
   border: 1px solid var(--line);
   border-radius: 0;
   background: #151514;
@@ -449,6 +449,69 @@ main {
     border-color 180ms ease,
     opacity 520ms ease,
     transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.photo-card.standard {
+  grid-column: span 3;
+}
+
+.photo-card.portrait.standard,
+.photo-card.tall {
+  grid-column: span 3;
+}
+
+.photo-card.landscape,
+.photo-card.wide {
+  grid-column: span 5;
+}
+
+.photo-card.feature {
+  grid-column: span 6;
+}
+
+.photo-card.rhythm-1 {
+  margin-top: clamp(18px, 3vw, 46px);
+}
+
+.photo-card.rhythm-2 {
+  margin-top: clamp(6px, 1.8vw, 28px);
+}
+
+.photo-card.rhythm-4 {
+  margin-top: clamp(26px, 4vw, 62px);
+}
+
+.photo-card.rhythm-5 {
+  margin-top: clamp(10px, 2vw, 34px);
+}
+
+.chapter-palace .photo-card.feature:first-child {
+  grid-column: span 7;
+}
+
+.chapter-palace .photo-card:nth-child(4n + 2) {
+  grid-column: span 4;
+}
+
+.chapter-night .photo-card.wide,
+.chapter-night .photo-card.landscape {
+  grid-column: span 6;
+}
+
+.chapter-night .photo-card:nth-child(5n + 3) {
+  grid-column: span 4;
+}
+
+.chapter-red .photo-card.feature {
+  grid-column: span 5;
+}
+
+.chapter-red .photo-card:nth-child(3) {
+  grid-column: span 7;
+}
+
+.chapter-editorial .photo-card.wide {
+  grid-column: span 7;
 }
 
 .photo-card.is-visible {
@@ -464,8 +527,41 @@ main {
   background: #10100f;
 }
 
+.photo-card::before {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 22px;
+  height: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.46);
+  border-left: 1px solid rgba(255, 255, 255, 0.46);
+  content: "";
+  opacity: 0.46;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.photo-card::after {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 22px;
+  height: 22px;
+  border-right: 1px solid rgba(255, 255, 255, 0.38);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.38);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+  z-index: 2;
+}
+
 .photo-card:hover {
   border-color: rgba(246, 245, 239, 0.5);
+}
+
+.photo-card:hover::after {
+  opacity: 0.52;
 }
 
 .photo-caption {
@@ -683,7 +779,7 @@ main {
 
 @media (max-width: 1060px) {
   .section-gallery {
-    column-count: 3;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 
   .gallery-section {
@@ -692,6 +788,24 @@ main {
 
   .gallery-lead {
     position: static;
+  }
+
+  .photo-card.standard,
+  .photo-card.portrait.standard,
+  .photo-card.tall {
+    grid-column: span 4;
+  }
+
+  .photo-card.landscape,
+  .photo-card.wide,
+  .photo-card.feature,
+  .chapter-palace .photo-card.feature:first-child,
+  .chapter-night .photo-card.wide,
+  .chapter-night .photo-card.landscape,
+  .chapter-red .photo-card.feature,
+  .chapter-red .photo-card:nth-child(3),
+  .chapter-editorial .photo-card.wide {
+    grid-column: span 8;
   }
 }
 
@@ -787,12 +901,41 @@ main {
   }
 
   .section-gallery {
-    column-count: 2;
-    column-gap: 6px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
   }
 
-  .photo-card {
-    margin-bottom: 6px;
+  .photo-card.standard,
+  .photo-card.portrait.standard,
+  .photo-card.tall {
+    grid-column: span 2;
+  }
+
+  .photo-card.landscape,
+  .photo-card.wide,
+  .photo-card.feature,
+  .chapter-palace .photo-card.feature:first-child,
+  .chapter-night .photo-card.wide,
+  .chapter-night .photo-card.landscape,
+  .chapter-red .photo-card.feature,
+  .chapter-red .photo-card:nth-child(3),
+  .chapter-editorial .photo-card.wide {
+    grid-column: span 4;
+  }
+
+  .photo-card.rhythm-1,
+  .photo-card.rhythm-2,
+  .photo-card.rhythm-4,
+  .photo-card.rhythm-5 {
+    margin-top: 0;
+  }
+
+  .photo-card:nth-child(4n + 2) {
+    margin-top: 18px;
+  }
+
+  .photo-card:nth-child(6n + 5) {
+    grid-column: span 4;
   }
 
   .photo-caption {
@@ -826,7 +969,17 @@ main {
 
 @media (max-width: 390px) {
   .section-gallery {
-    column-count: 1;
+    grid-template-columns: 1fr;
+  }
+
+  .photo-card,
+  .photo-card.standard,
+  .photo-card.portrait.standard,
+  .photo-card.tall,
+  .photo-card.landscape,
+  .photo-card.wide,
+  .photo-card.feature {
+    grid-column: 1 / -1;
   }
 }
 
