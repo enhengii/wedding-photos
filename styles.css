@@ -1200,6 +1200,117 @@ main {
     margin-left: 0;
   }
 
+  .chapter-palace .photo-card:nth-child(6n + 1) {
+    flex: 0 0 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .chapter-palace .photo-card:nth-child(6n + 2):not(.landscape) {
+    flex: 0 0 86%;
+    margin-right: 0;
+    margin-left: auto;
+  }
+
+  .chapter-palace .photo-card:nth-child(6n + 4):not(.landscape):not(.wide) {
+    flex: 0 0 74%;
+    margin-right: auto;
+    margin-left: 7%;
+  }
+
+  .chapter-palace .photo-card:nth-child(6n + 6):not(.landscape) {
+    flex: 0 0 82%;
+    margin-right: 6%;
+    margin-left: auto;
+  }
+
+  .chapter-night .section-gallery {
+    align-items: flex-start;
+  }
+
+  .chapter-night .photo-card {
+    margin-bottom: 16px;
+  }
+
+  .chapter-night .photo-card:nth-child(5n + 1):not(.landscape):not(.wide),
+  .chapter-night .photo-card:nth-child(5n + 2):not(.landscape):not(.wide) {
+    flex: 0 0 calc(50% - 5px);
+    margin-right: 5px;
+    margin-left: 0;
+  }
+
+  .chapter-night .photo-card:nth-child(5n + 2):not(.landscape):not(.wide) {
+    margin-right: 0;
+    margin-left: 5px;
+    margin-top: 34px;
+  }
+
+  .chapter-night .photo-card:nth-child(5n + 3):not(.landscape):not(.wide) {
+    flex: 0 0 72%;
+    margin-right: 0;
+    margin-left: auto;
+  }
+
+  .chapter-night .photo-card.landscape,
+  .chapter-night .photo-card.wide {
+    flex: 0 0 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .chapter-red {
+    margin-top: 18px;
+  }
+
+  .chapter-red .section-gallery {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .chapter-red .photo-card {
+    margin-bottom: 30px;
+  }
+
+  .chapter-red .photo-card:nth-child(odd):not(.landscape) {
+    flex: 0 0 90%;
+    margin-right: auto;
+    margin-left: 0;
+  }
+
+  .chapter-red .photo-card:nth-child(even):not(.landscape) {
+    flex: 0 0 76%;
+    margin-right: 0;
+    margin-left: auto;
+  }
+
+  .chapter-red .photo-card.feature,
+  .chapter-red .photo-card.wide {
+    flex: 0 0 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .chapter-editorial .photo-card:nth-child(1),
+  .chapter-editorial .photo-card:nth-child(4) {
+    flex: 0 0 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .chapter-editorial .photo-card:nth-child(2):not(.landscape),
+  .chapter-editorial .photo-card:nth-child(5):not(.landscape) {
+    flex: 0 0 68%;
+    margin-right: auto;
+    margin-left: 0;
+  }
+
+  .chapter-editorial .photo-card:nth-child(3):not(.landscape),
+  .chapter-editorial .photo-card:nth-child(6):not(.landscape) {
+    flex: 0 0 82%;
+    margin-right: 0;
+    margin-left: auto;
+  }
+
   .photo-caption {
     position: static;
     display: flex;
