@@ -10,8 +10,9 @@
     <meta property="og:description" content="一场关于相爱、靠近与成家的黑白摄影展。" />
     <meta property="og:type" content="website" />
     <title>我们的结婚照</title>
+    <link rel="icon" href="./assets/hero-placeholder.png" />
     <link rel="preload" as="image" href="./assets/hero-placeholder.png" />
-    <link rel="stylesheet" href="./styles.css?v=safe-irregular-1" />
+    <link rel="stylesheet" href="./styles.css?v=mobile-design-1" />
   </head>
   <body>
     <div class="cursor-light" aria-hidden="true"></div>
@@ -78,10 +79,10 @@
           <h2>按照片气质排成四章</h2>
           <p>我把 50 张照片分成宫廷白纱、夜色庆祝、红色庭院、时装亲密四组。移动端会按每组照片的气质切换版式，不再是一整套重复网格。</p>
           <div class="chapter-notes" aria-label="章节说明">
-            <span>01  宫廷白纱</span>
-            <span>02  夜色庆祝</span>
-            <span>03  红色庭院</span>
-            <span>04  时装亲密</span>
+            <button type="button" data-scroll-target="#chapter-palace"><span>01</span>宫廷白纱</button>
+            <button type="button" data-scroll-target="#chapter-night"><span>02</span>夜色庆祝</button>
+            <button type="button" data-scroll-target="#chapter-red"><span>03</span>红色庭院</button>
+            <button type="button" data-scroll-target="#chapter-editorial"><span>04</span>时装亲密</button>
           </div>
         </div>
         <div class="gallery-chapters" id="galleryGrid"></div>
@@ -108,6 +109,6 @@
       </footer>
     </dialog>
 
-    <script src="./app.js?v=safe-irregular-1"></script>
+    <script src="./app.js?v=mobile-design-1"></script>
   </body>
 </html>
