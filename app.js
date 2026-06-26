@@ -217,6 +217,7 @@ const photos = Array.from({ length: photoCount }, (_, index) => ({
   height: photoSizes[index][1],
   index,
   loaded: true,
+  previewSrc: fileName(index, "preview"),
   thumbSrc: fileName(index, "thumbs"),
   width: photoSizes[index][0],
 }));
@@ -289,9 +290,12 @@ function makePhotoCard(index, layout, position) {
 
   const image = new Image();
   image.alt = photo.caption;
-  image.src = photo.thumbSrc;
-  image.loading = position < 3 ? "eager" : "lazy";
+  image.src = photo.previewSrc;
+  image.srcset = `${photo.previewSrc} 900w, ${photo.thumbSrc} 1400w`;
+  image.sizes = "(min-width: 960px) 24vw, (min-width: 760px) 42vw, 96vw";
+  image.loading = position < 2 ? "eager" : "lazy";
   image.decoding = "async";
+  image.fetchPriority = position < 2 ? "high" : "low";
 
   image.addEventListener("load", () => {
     photo.loaded = true;
