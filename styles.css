@@ -102,7 +102,7 @@ main {
   border: 1px solid rgba(246, 245, 239, 0.22);
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.38)),
-    url("./images/preview/photo-01.jpg") center / contain no-repeat,
+    url("./images/preview/photo-01.jpg?v=img-lite-1") center / contain no-repeat,
     #181816;
   box-shadow: var(--shadow);
 }
@@ -121,7 +121,7 @@ main {
   aspect-ratio: 7457 / 4971;
   background-image:
     linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.28)),
-    url("./images/preview/photo-02.jpg");
+    url("./images/preview/photo-02.jpg?v=img-lite-1");
 }
 
 .hero-count {
