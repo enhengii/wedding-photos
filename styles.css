@@ -15,6 +15,7 @@
 }
 
 html {
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
 
@@ -27,6 +28,7 @@ body {
   color: var(--ink);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", sans-serif;
+  overflow-x: clip;
 }
 
 body.is-viewer-open {
@@ -59,6 +61,7 @@ button {
 }
 
 main {
+  min-width: 0;
   overflow: hidden;
 }
 
@@ -347,6 +350,7 @@ main {
   grid-template-columns: minmax(240px, 0.25fr) minmax(0, 1fr);
   gap: clamp(24px, 4vw, 54px);
   align-items: start;
+  min-width: 0;
 }
 
 .gallery-lead {
@@ -383,11 +387,13 @@ main {
 .gallery-chapters {
   display: grid;
   gap: clamp(36px, 6vw, 72px);
+  min-width: 0;
 }
 
 .photo-chapter {
   display: grid;
   gap: 18px;
+  min-width: 0;
   content-visibility: auto;
   contain-intrinsic-size: 1300px;
 }
@@ -426,16 +432,21 @@ main {
 }
 
 .section-gallery {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: clamp(8px, 1.1vw, 14px);
   align-items: start;
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
 }
 
 .photo-card {
   position: relative;
   display: block;
+  min-width: 0;
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 0;
@@ -452,21 +463,21 @@ main {
 }
 
 .photo-card.standard {
-  grid-column: span 3;
+  flex: 1 1 calc(24% - 14px);
 }
 
 .photo-card.portrait.standard,
 .photo-card.tall {
-  grid-column: span 3;
+  flex-basis: calc(23% - 14px);
 }
 
 .photo-card.landscape,
 .photo-card.wide {
-  grid-column: span 5;
+  flex-basis: calc(40% - 14px);
 }
 
 .photo-card.feature {
-  grid-column: span 6;
+  flex-basis: calc(48% - 14px);
 }
 
 .photo-card.rhythm-1 {
@@ -486,32 +497,32 @@ main {
 }
 
 .chapter-palace .photo-card.feature:first-child {
-  grid-column: span 7;
+  flex-basis: calc(56% - 14px);
 }
 
 .chapter-palace .photo-card:nth-child(4n + 2) {
-  grid-column: span 4;
+  flex-basis: calc(32% - 14px);
 }
 
 .chapter-night .photo-card.wide,
 .chapter-night .photo-card.landscape {
-  grid-column: span 6;
+  flex-basis: calc(48% - 14px);
 }
 
 .chapter-night .photo-card:nth-child(5n + 3) {
-  grid-column: span 4;
+  flex-basis: calc(32% - 14px);
 }
 
 .chapter-red .photo-card.feature {
-  grid-column: span 5;
+  flex-basis: calc(42% - 14px);
 }
 
 .chapter-red .photo-card:nth-child(3) {
-  grid-column: span 7;
+  flex-basis: calc(56% - 14px);
 }
 
 .chapter-editorial .photo-card.wide {
-  grid-column: span 7;
+  flex-basis: calc(58% - 14px);
 }
 
 .photo-card.is-visible {
@@ -778,10 +789,6 @@ main {
 }
 
 @media (max-width: 1060px) {
-  .section-gallery {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-  }
-
   .gallery-section {
     grid-template-columns: 1fr;
   }
@@ -793,7 +800,7 @@ main {
   .photo-card.standard,
   .photo-card.portrait.standard,
   .photo-card.tall {
-    grid-column: span 4;
+    flex-basis: calc(33.333% - 10px);
   }
 
   .photo-card.landscape,
@@ -805,7 +812,7 @@ main {
   .chapter-red .photo-card.feature,
   .chapter-red .photo-card:nth-child(3),
   .chapter-editorial .photo-card.wide {
-    grid-column: span 8;
+    flex-basis: calc(66.666% - 10px);
   }
 }
 
@@ -901,14 +908,15 @@ main {
   }
 
   .section-gallery {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 6px;
   }
 
   .photo-card.standard,
   .photo-card.portrait.standard,
   .photo-card.tall {
-    grid-column: span 2;
+    flex: 0 0 100%;
+    margin-right: 0;
+    margin-left: 0;
   }
 
   .photo-card.landscape,
@@ -920,7 +928,9 @@ main {
   .chapter-red .photo-card.feature,
   .chapter-red .photo-card:nth-child(3),
   .chapter-editorial .photo-card.wide {
-    grid-column: span 4;
+    flex: 0 0 100%;
+    margin-right: 0;
+    margin-left: 0;
   }
 
   .photo-card.rhythm-1,
@@ -931,11 +941,22 @@ main {
   }
 
   .photo-card:nth-child(4n + 2) {
+    flex: 0 0 92%;
+    margin-right: 0;
+    margin-left: auto;
     margin-top: 18px;
   }
 
+  .photo-card:nth-child(5n + 3) {
+    flex: 0 0 88%;
+    margin-right: auto;
+    margin-left: 0;
+  }
+
   .photo-card:nth-child(6n + 5) {
-    grid-column: span 4;
+    flex: 0 0 100%;
+    margin-right: 0;
+    margin-left: 0;
   }
 
   .photo-caption {
@@ -968,10 +989,6 @@ main {
 }
 
 @media (max-width: 390px) {
-  .section-gallery {
-    grid-template-columns: 1fr;
-  }
-
   .photo-card,
   .photo-card.standard,
   .photo-card.portrait.standard,
@@ -979,7 +996,9 @@ main {
   .photo-card.landscape,
   .photo-card.wide,
   .photo-card.feature {
-    grid-column: 1 / -1;
+    flex: 0 0 100%;
+    margin-right: 0;
+    margin-left: 0;
   }
 }
 
