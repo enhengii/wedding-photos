@@ -282,7 +282,7 @@ function makePhotoCard(index, layout, position) {
   const photo = photos[index];
   const button = document.createElement("button");
   const orientation = photo.width > photo.height ? "landscape" : "portrait";
-  button.className = `photo-card ${layoutClass(layout, position)} ${orientation}`;
+  button.className = `photo-card ${layoutClass(layout, position)} ${orientation} rhythm-${position % 6}`;
   button.type = "button";
   button.dataset.cardIndex = String(index);
   button.style.aspectRatio = `${photo.width} / ${photo.height}`;
